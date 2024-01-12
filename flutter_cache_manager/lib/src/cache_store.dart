@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 import 'package:flutter_cache_manager/src/storage/file_system/file_system.dart';
@@ -184,7 +185,11 @@ class CacheStore {
     }
     final file = await fileSystem.createFile(cacheObject.relativePath);
     if (await file.exists()) {
-      await file.delete();
+      try {
+        await file.delete();
+      } catch (e) {
+        debugPrint("文件不存在: $e");
+      }
     }
   }
 
